@@ -23,13 +23,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class APIController extends AbstractFOSRestController
 {
     /**
-     * This API returns the parking ocupation status for Amorebieta-Etxano
+     * This API returns the parking occupation status for Amorebieta-Etxano
      * parkings. The response can be filtered with parking parameter through
      * parking name to get only the results for that parking.
      *
      * @ApiDoc(
      *  resource=true,
-     *  description="Get parkings ocupation status",
+     *  description="Get parkings occupation status",
      *  filters={
      *      {"name"="parking", "dataType"="string","pattern" = "dsfsdfdsf"},
      *  },
@@ -41,7 +41,7 @@ class APIController extends AbstractFOSRestController
      *  }
      * )
      * @QueryParam(name="parking")
-     * @Get("/ocupation/")
+     * @Get("/occupation/")
      */
     public function getActivitiesAction(\FOS\RestBundle\Request\ParamFetcherInterface $paramFetcher)
     {
