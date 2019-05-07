@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use AppBundle\DTO\ParkingOcupationLineDTO;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Description of RestController.
@@ -22,15 +23,15 @@ use AppBundle\DTO\ParkingOcupationLineDTO;
 class APIController extends AbstractFOSRestController
 {
     /**
-     * This is the documentation description of your method, it will appear
-     * on a specific pane. It will read all the text until the first
-     * annotation.
+     * This API returns the parking ocupation status for Amorebieta-Etxano
+     * parkings. The response can be filtered with parking parameter through
+     * parking name to get only the results for that parking.
      *
      * @ApiDoc(
      *  resource=true,
      *  description="Get parkings ocupation status",
      *  filters={
-     *      {"name"="parking", "dataType"="string"},
+     *      {"name"="parking", "dataType"="string","pattern" = "dsfsdfdsf"},
      *  },
      *  statusCodes={
      *      200="Returned when successful",
@@ -69,12 +70,17 @@ class APIController extends AbstractFOSRestController
             $query->setParameter('nombre', $parking);
         }
         $data = $query->getResult();
-        foreach ($data as $row) {
-            $pol = ParkingOcupationLineDTO::createParkingOcupationFromData($row);
-            $results[] = $pol;
-        }
-        $view = new View($results);
+        $count = count($data);
+        if ($count > 0) {
+            foreach ($data as $row) {
+                $pol = ParkingOcupationLineDTO::createParkingOcupationFromData($row);
+                $results[] = $pol;
+            }
+            $view = new View($results);
 
-        return $this->get('fos_rest.view_handler')->handle($view);
+            return $this->get('fos_rest.view_handler')->handle($view);
+        } else {
+            return new JsonResponse('Parking not found', 404);
+        }
     }
 }
